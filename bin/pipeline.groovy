@@ -3,7 +3,7 @@
  **/
 def DOCKER_NAME = "iotat-api-gateway"
 def IMAGE_NAME  = "iotat/iotat-api-gateway"
-def GITHUB_URL = "https://github.com/iotat-software/otat-api-gateway.git"
+def GITHUB_URL = "https://github.com/iotat-software/iotat-api-gateway.git"
 def PORT = "8080:8080"
 pipeline {
     agent any
@@ -41,7 +41,7 @@ pipeline {
         stage('启动Docker镜像') {
             steps {
                 echo "docker image start..."
-                sh "docker run -d -p ${PORT} -v /home/iotat/logs:/logs/ --add-host=iotat.cn:172.17.0.1 --restart=always --name ${DOCKER_NAME} ${IMAGE_NAME}"
+                sh "docker run -d -p ${PORT} -v /home/iotat/logs:/logs/ --add-host=iotat.cn:172.17.0.1 --env profile=jdbc --restart=always --name ${DOCKER_NAME} ${IMAGE_NAME}"
             }
         }
     }
