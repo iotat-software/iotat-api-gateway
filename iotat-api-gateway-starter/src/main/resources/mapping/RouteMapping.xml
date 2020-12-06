@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.iotat.gateway.dao.RouteDAO">
+    <resultMap id="BaseResultMap" type="cn.iotat.gateway.model.RouteModel">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+        <result column="route_id" jdbcType="VARCHAR" property="routeId"/>
+        <result column="route_des" jdbcType="VARCHAR" property="routeDes"/>
+        <result column="param_info" jdbcType="VARCHAR" property="paramInfo"/>
+        <result column="properties_info" jdbcType="VARCHAR" property="propertiesInfo"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTIme"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, app_name, route_id, route_des, param_info, properties_info,create_time,modify_time
+    </sql>
+    <select id="getRouteByRouteId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_api_route
+        where route_id = #{routeId,jdbcType=INTEGER}
+    </select>
+    <select id="getAllRoutes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_api_route
+        limit #{pageNo}, #{pageSize}
+    </select>
+    <select id="getCountRoutes" resultType="java.lang.Integer">
+        select count(*)
+        from t_api_route
+    </select>
+    <delete id="deleteRoute">
+        delete
+        from t_api_route
+        where id = #{id,jdbcType=INTEGER}
+          and route_id = #{routeId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="addRoute" keyColumn="id" keyProperty="id" parameterType="cn.iotat.gateway.model.RouteModel"
+            useGeneratedKeys="true">
+        insert into t_api_route (app_name, route_id, route_des,
+                                 param_info, properties_info, create_time, modify_time)
+        values (#{appName,jdbcType=VARCHAR}, #{routeId,jdbcType=VARCHAR}, #{routeDes,jdbcType=VARCHAR},
+                #{paramInfo,jdbcType=VARCHAR}, #{propertiesInfo,jdbcType=VARCHAR}, #{createTime}, #{modifyTIme})
+    </insert>
+    <update id="updateRoute" parameterType="cn.iotat.gateway.model.RouteModel">
+        update t_api_route
+        set app_name        = #{appName,jdbcType=VARCHAR},
+            route_des       = #{routeDes,jdbcType=VARCHAR},
+            param_info      = #{paramInfo,jdbcType=VARCHAR},
+            properties_info = #{propertiesInfo,jdbcType=VARCHAR},
+            modify_time     = #{modifyTIme}
+        where id = #{id,jdbcType=INTEGER}
+          AND route_id = #{routeId,jdbcType=VARCHAR}
+    </update>
+</mapper>

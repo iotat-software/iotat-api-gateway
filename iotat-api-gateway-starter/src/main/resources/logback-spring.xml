@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="false" scan="true">
+    <!--  读取spring配置  -->
+    <!--  日志级别  -->
+    <springProperty scope="context" name="LOG_ROOT_LEVEL" source="logging.level.root" defaultValue="DEBUG"/>
+    <!--  项目名  -->
+    <springProperty scope="context" name="PROJECT_NAME" source="spring.application.name" defaultValue="unknown"/>
+    <!--  日志目录  -->
+    <springProperty scope="context" name="LOG_HOME" source="logging.home.path" defaultValue="./logs"/>
+    <!--  自定义配置  -->
+    <!--  日志格式  -->
+    <property name="LOG_PATTERN_DEFAULT" value="%X{traceId} %d{HH:mm:ss.SSS} [%thread] %-5level %logger{72} - %msg%n"/>
+    <!--  日志格式  -->
+    <property name="LOG_PATTERN" value="%X{traceId} %d{HH:mm:ss.SSS} [%thread] %-5level %msg%n"/>
+    <!--  dal日志文件名称  -->
+    <property name="LOG_NAME_DAL" value="${PROJECT_NAME}-dal"/>
+    <!--  service日志文件名称  -->
+    <property name="LOG_NAME_SERVICE" value="${PROJECT_NAME}-service"/>
+    <!--  自定义日志文件名称  -->
+    <property name="LOG_NAME_CUSTOMISE" value="${PROJECT_NAME}-customise"/>
+    <!--  err日志文件名称  -->
+    <property name="LOG_NAME_ERROR" value="${PROJECT_NAME}-error"/>
+    <!-- 监控日志名称 -->
+    <property name="MONITOR" value="${PROJECT_NAME}-monitor"/>
+    <!-- 日志文件编码 -->
+    <property name="LOG_CHARSET" value="utf-8"/>
+    <!-- 配置日志的滚动时间，保存时间为15天-->
+    <property name="MAX_HISTORY" value="15"/>
+    <!-- 文件大小，默认为10MB-->
+    <property name="MAX_FILE_SIZE" value="10MB"/>
+
+    <!-- 打印到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 格式化日志内容-->
+        <encoder>
+            <pattern>${LOG_PATTERN_DEFAULT}</pattern>
+        </encoder>
+    </appender>
+
+    <!--  dal业务日志  -->
+    <appender name="LOG_DAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志名（最新） -->
+        <File>${LOG_HOME}/${LOG_NAME_DAL}.log</File>
+        <!-- 文件滚动模式 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 其他日志名 -->
+            <FileNamePattern>${LOG_HOME}/${LOG_NAME_DAL}.log.%d{yyyy-MM-dd}.%i</FileNamePattern>
+            <!-- 保存日志N天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 按大小分割同一天的 -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 日志文件的最大大小 -->
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--输出格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出-->
+            <pattern>${LOG_PATTERN}</pattern>
+            <!--设置编码-->
+            <charset>${LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!--  service业务日志  -->
+    <appender name="LOG_SERVICE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志名（最新） -->
+        <File>${LOG_HOME}/${LOG_NAME_SERVICE}.log</File>
+        <!-- 文件滚动模式 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 其他日志名 -->
+            <FileNamePattern>${LOG_HOME}/${LOG_NAME_SERVICE}.log.%d{yyyy-MM-dd}.%i</FileNamePattern>
+            <!-- 保存日志N天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 按大小分割同一天的 -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 日志文件的最大大小 -->
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--输出格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出-->
+            <pattern>${LOG_PATTERN}</pattern>
+            <!--设置编码-->
+            <charset>${LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!--  监控日志  -->
+    <appender name="LOG_MONITOR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志名（最新） -->
+        <File>${LOG_HOME}/${MONITOR}.log</File>
+        <!-- 文件滚动模式 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 其他日志名 -->
+            <FileNamePattern>${LOG_HOME}/${MONITOR}.log.%d{yyyy-MM-dd}.%i</FileNamePattern>
+            <!-- 保存日志N天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 按大小分割同一天的 -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 日志文件的最大大小 -->
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--输出格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出-->
+            <pattern>${LOG_PATTERN}</pattern>
+            <!--设置编码-->
+            <charset>${LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!--  自定义日志  -->
+    <appender name="LOG_CUSTOMISE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志名（最新） -->
+        <File>${LOG_HOME}/${LOG_NAME_CUSTOMISE}.log</File>
+        <!-- 文件滚动模式 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 其他日志名 -->
+            <FileNamePattern>${LOG_HOME}/${LOG_NAME_CUSTOMISE}.log.%d{yyyy-MM-dd}.%i</FileNamePattern>
+            <!-- 保存日志N天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 按大小分割同一天的 -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 日志文件的最大大小 -->
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--输出格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出-->
+            <pattern>${LOG_PATTERN}</pattern>
+            <!--设置编码-->
+            <charset>${LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!--  文件输出 错误日志  -->
+    <appender name="LOG_ERR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志名（最新） -->
+        <File>${LOG_HOME}/${LOG_NAME_ERROR}.log</File>
+        <!-- 文件滚动模式 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 其他日志名 -->
+            <FileNamePattern>${LOG_HOME}/${LOG_NAME_ERROR}.log.%d{yyyy-MM-dd}.%i</FileNamePattern>
+            <!-- 保存日志N天 -->
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <!-- 按大小分割同一天的 -->
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 日志文件的最大大小 -->
+                <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!--输出格式-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--格式化输出-->
+            <pattern>${LOG_PATTERN}</pattern>
+            <!--设置编码-->
+            <charset>${LOG_CHARSET}</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!-- 日志输出级别 -->
+    <root leve="${LOG_ROOT_LEVEL}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOG_ERR"/>
+    </root>
+
+    <logger name="cn.iotat.gateway.dao" level="DEBUG"/>
+    <!--  SQL语句日志输出  -->
+    <logger name="cn.iotat.gateway.dao" additivity="false" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOG_DAL"/>
+    </logger>
+    <!--  DAL日志输出  -->
+    <logger name="cn.iotat.gateway.aop.DAOLoggerAspectConfig" additivity="false" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOG_DAL"/>
+    </logger>
+    <!--  service日志输出  -->
+    <logger name="cn.iotat.gateway.aop.ServiceLoggerAspectConfig" additivity="false" level="${LOG_ROOT_LEVEL}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOG_SERVICE"/>
+    </logger>
+    <logger name="cn.iotat.gateway.util.log.LoggerUtil" additivity="false" llevel="${LOG_ROOT_LEVEL}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOG_CUSTOMISE"/>
+    </logger>
+    <!--  监控日志输出  -->
+    <logger name="monitor" additivity="false" level="${LOG_ROOT_LEVEL}">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="LOG_MONITOR"/>
+    </logger>
+</configuration>
