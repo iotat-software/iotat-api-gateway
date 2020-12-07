@@ -1,19 +1,22 @@
 package cn.iotat.gateway.faced.common;
 
 /**
- * 错误码统计，此处错误码为{@link cn.iotat.producer.faced.response.BaseResponse}类下的errCode和errMsg两个值
  * 在实际生产活动中，该错误码应该由统一的平台进行管理，需要创建新的错误码则向平台进行申请，
  * 以便于企业进行错误码统计管理以及减少不同业务部门之间的障碍
  * 另外，错误码一般分为几种，包括但不限于下面注释的几种
  *
  * @author pang
  */
-public enum ErrorCodeEnum {
+public enum ErrorCodeEnum{
     //=========== 参数错误(1xxx) ===========
     /**
      * 必填参数没有填写
      */
     HAVE_NO_ID("1000","param 'id' is required"),
+    /**
+     * 路由的id和route_id不匹配
+     */
+    NOT_FOUND_ROUTE("1001","not found route,check if id and route_id matched"),
     //=========== 内部错误(2xxx) ===========
 
     //=========== 网络错误(3xxx) ===========
@@ -55,8 +58,8 @@ public enum ErrorCodeEnum {
         final StringBuilder sb = new StringBuilder("{");
         sb.append("\"errMsg\":\"")
                 .append(errMsg).append('\"');
-        sb.append(",\"errCode\":")
-                .append(errCode);
+        sb.append(",\"errCode\":\"")
+                .append(errCode).append('\"');
         sb.append('}');
         return sb.toString();
     }
